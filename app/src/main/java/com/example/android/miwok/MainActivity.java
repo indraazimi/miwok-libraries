@@ -23,15 +23,21 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
+import com.android.volley.Cache;
+import com.android.volley.Network;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.BasicNetwork;
+import com.android.volley.toolbox.DiskBasedCache;
+import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String REQUEST_URL = "http://dif.indraazimi.com/miwok.json";
+    private RequestQueue mRequestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +45,11 @@ public class MainActivity extends AppCompatActivity {
 
         // Set the content of the activity to use the activity_main.xml layout file
         setContentView(R.layout.activity_main);
+
+        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024);
+        Network network = new BasicNetwork(new HurlStack());
+        mRequestQueue = new RequestQueue(cache, network);
+        mRequestQueue.start();
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, REQUEST_URL,
                 new Response.Listener<String>() {
@@ -52,9 +63,8 @@ public class MainActivity extends AppCompatActivity {
                         Log.d(TAG, "Request error: " + error.getMessage());
                     }
                 });
-
-        // Add the request to the RequestQueue.
-        Volley.newRequestQueue(this).add(stringRequest);
+        stringRequest.setTag(TAG);
+        mRequestQueue.add(stringRequest);
 
         // Find the View that shows the numbers category
         TextView numbers = (TextView) findViewById(R.id.numbers);
@@ -119,5 +129,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(phrasesIntent);
             }
         });
+    }
+
+    @Override
+    protected void onStop () {
+        super.onStop();
+        if (mRequestQueue != null) {
+            // Cancel all of our pending requests in this activity
+            mRequestQueue.cancelAll(TAG);
+        }
     }
 }
