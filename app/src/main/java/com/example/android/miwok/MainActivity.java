@@ -15,13 +15,10 @@
  */
 package com.example.android.miwok;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.TextView;
+import android.widget.ListView;
 
 import com.android.volley.Cache;
 import com.android.volley.Network;
@@ -46,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String REQUEST_URL = "http://dif.indraazimi.com/miwok.json";
     private RequestQueue mRequestQueue;
     private ArrayList<Main> mCategories;
+    private MainAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +51,11 @@ public class MainActivity extends AppCompatActivity {
 
         // Set the content of the activity to use the activity_main.xml layout file
         setContentView(R.layout.activity_main);
+
+        mCategories = new ArrayList<>();
+        mAdapter = new MainAdapter(this, mCategories);
+        ListView myList = findViewById(R.id.category_list_view);
+        myList.setAdapter(mAdapter);
 
         Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024);
         Network network = new BasicNetwork(new HurlStack());
@@ -66,8 +69,7 @@ public class MainActivity extends AppCompatActivity {
                         Gson gson = new GsonBuilder().create();
                         Type type = new TypeToken<List<Main>>(){}.getType();
                         mCategories = gson.fromJson(response, type);
-
-                        Log.d(TAG, "Response we got: " + mCategories.size() + " categories");
+                        mAdapter.addAll(mCategories);
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -77,70 +79,6 @@ public class MainActivity extends AppCompatActivity {
                 });
         stringRequest.setTag(TAG);
         mRequestQueue.add(stringRequest);
-
-        // Find the View that shows the numbers category
-        TextView numbers = (TextView) findViewById(R.id.numbers);
-
-        // Set a click listener on that View
-        numbers.setOnClickListener(new OnClickListener() {
-            // The code in this method will be executed when the numbers category is clicked on.
-            @Override
-            public void onClick(View view) {
-                // Create a new intent to open the {@link NumbersActivity}
-                Intent numbersIntent = new Intent(MainActivity.this, NumbersActivity.class);
-
-                // Start the new activity
-                startActivity(numbersIntent);
-            }
-        });
-
-        // Find the View that shows the family category
-        TextView family = (TextView) findViewById(R.id.family);
-
-        // Set a click listener on that View
-        family.setOnClickListener(new OnClickListener() {
-            // The code in this method will be executed when the family category is clicked on.
-            @Override
-            public void onClick(View view) {
-                // Create a new intent to open the {@link FamilyActivity}
-                Intent familyIntent = new Intent(MainActivity.this, FamilyActivity.class);
-
-                // Start the new activity
-                startActivity(familyIntent);
-            }
-        });
-
-        // Find the View that shows the colors category
-        TextView colors = (TextView) findViewById(R.id.colors);
-
-        // Set a click listener on that View
-        colors.setOnClickListener(new OnClickListener() {
-            // The code in this method will be executed when the colors category is clicked on.
-            @Override
-            public void onClick(View view) {
-                // Create a new intent to open the {@link ColorsActivity}
-                Intent colorsIntent = new Intent(MainActivity.this, ColorsActivity.class);
-
-                // Start the new activity
-                startActivity(colorsIntent);
-            }
-        });
-
-        // Find the View that shows the phrases category
-        TextView phrases = (TextView) findViewById(R.id.phrases);
-
-        // Set a click listener on that View
-        phrases.setOnClickListener(new OnClickListener() {
-            // The code in this method will be executed when the phrases category is clicked on.
-            @Override
-            public void onClick(View view) {
-                // Create a new intent to open the {@link PhrasesActivity}
-                Intent phrasesIntent = new Intent(MainActivity.this, PhrasesActivity.class);
-
-                // Start the new activity
-                startActivity(phrasesIntent);
-            }
-        });
     }
 
     @Override
