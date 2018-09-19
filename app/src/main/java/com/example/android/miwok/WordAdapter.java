@@ -23,6 +23,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 /**
@@ -30,8 +32,9 @@ import java.util.ArrayList;
  * based on a data source, which is a list of {@link Word} objects.
  */
 public class WordAdapter extends ArrayAdapter<Word>  {
+    private static final String IMAGES_URL = "http://dif.indraazimi.com/miwok/";
 
-    /** Resource ID for the background color for this list of words */
+    /** The background color for this list of words */
     private int mBackgroundColor;
 
     /**
@@ -74,9 +77,8 @@ public class WordAdapter extends ArrayAdapter<Word>  {
         ImageView imageView = (ImageView) listItemView.findViewById(R.id.image);
         // Check if an image is provided for this word or not
         if (currentWord.hasImage()) {
-            // If an image is available, display the provided image based on the resource ID
-            // We will load images dynamically using Picasso later
-            imageView.setImageResource(R.drawable.number_one);
+            // If an image is available, display the provided image based on the name
+            Picasso.get().load(IMAGES_URL + currentWord.getImageName()).into(imageView);
             // Make sure the view is visible
             imageView.setVisibility(View.VISIBLE);
         } else {
