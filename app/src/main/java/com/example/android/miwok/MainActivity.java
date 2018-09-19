@@ -33,11 +33,19 @@ import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.StringRequest;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String REQUEST_URL = "http://dif.indraazimi.com/miwok.json";
     private RequestQueue mRequestQueue;
+    private ArrayList<Main> mCategories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +63,11 @@ public class MainActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d(TAG, "Response we got: " + response);
+                        Gson gson = new GsonBuilder().create();
+                        Type type = new TypeToken<List<Main>>(){}.getType();
+                        mCategories = gson.fromJson(response, type);
+
+                        Log.d(TAG, "Response we got: " + mCategories.size() + " categories");
                     }
                 }, new Response.ErrorListener() {
                     @Override
