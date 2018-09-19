@@ -75,7 +75,8 @@ public class WordAdapter extends ArrayAdapter<Word>  {
         // Check if an image is provided for this word or not
         if (currentWord.hasImage()) {
             // If an image is available, display the provided image based on the resource ID
-            imageView.setImageResource(currentWord.getImageResourceId());
+            // We will load images dynamically using Picasso later
+            imageView.setImageResource(R.drawable.number_one);
             // Make sure the view is visible
             imageView.setVisibility(View.VISIBLE);
         } else {

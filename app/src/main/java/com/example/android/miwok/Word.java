@@ -15,50 +15,47 @@
  */
 package com.example.android.miwok;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.text.TextUtils;
+
+import com.google.gson.annotations.SerializedName;
+
 /**
  * {@link Word} represents a vocabulary word that the user wants to learn.
  * It contains a default translation, a Miwok translation, and an image for that word.
  */
-public class Word {
+public class Word implements Parcelable {
 
     /** Default translation for the word */
+    @SerializedName("defaultWord")
     private String mDefaultTranslation;
 
     /** Miwok translation for the word */
+    @SerializedName("miwokWord")
     private String mMiwokTranslation;
 
-    /** Image resource ID for the word */
-    private int mImageResourceId = NO_IMAGE_PROVIDED;
+    /** Image name for the word */
+    @SerializedName("image")
+    private String mImageName;
 
-    /** Constant value that represents no image was provided for this word */
-    private static final int NO_IMAGE_PROVIDED = -1;
-
-    /**
-     * Create a new Word object.
-     *
-     * @param defaultTranslation is the word in a language that the user is already familiar with
-     *                           (such as English)
-     * @param miwokTranslation is the word in the Miwok language
-     */
-    public Word(String defaultTranslation, String miwokTranslation) {
-        mDefaultTranslation = defaultTranslation;
-        mMiwokTranslation = miwokTranslation;
+    protected Word(Parcel in) {
+        mDefaultTranslation = in.readString();
+        mMiwokTranslation = in.readString();
+        mImageName = in.readString();
     }
 
-    /**
-     * Create a new Word object.
-     *
-     * @param defaultTranslation is the word in a language that the user is already familiar with
-     *                           (such as English)
-     * @param miwokTranslation is the word in the Miwok language
-     * @param imageResourceId is the drawable resource ID for the image associated with the word
-     *
-     */
-    public Word(String defaultTranslation, String miwokTranslation, int imageResourceId) {
-        mDefaultTranslation = defaultTranslation;
-        mMiwokTranslation = miwokTranslation;
-        mImageResourceId = imageResourceId;
-    }
+    public static final Creator<Word> CREATOR = new Creator<Word>() {
+        @Override
+        public Word createFromParcel(Parcel in) {
+            return new Word(in);
+        }
+
+        @Override
+        public Word[] newArray(int size) {
+            return new Word[size];
+        }
+    };
 
     /**
      * Get the default translation of the word.
@@ -75,16 +72,28 @@ public class Word {
     }
 
     /**
-     * Return the image resource ID of the word.
+     * Return the image name of the word.
      */
-    public int getImageResourceId() {
-        return mImageResourceId;
+    public String getImageName() {
+        return mImageName;
     }
 
     /**
      * Returns whether or not there is an image for this word.
      */
     public boolean hasImage() {
-        return mImageResourceId != NO_IMAGE_PROVIDED;
+        return !TextUtils.isEmpty(mImageName);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mDefaultTranslation);
+        dest.writeString(mMiwokTranslation);
+        dest.writeString(mImageName);
     }
 }

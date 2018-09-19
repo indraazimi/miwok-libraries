@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
                 Main currentCategory = mCategories.get(position);
                 intent.putExtra("category", currentCategory.getCategory());
                 intent.putExtra("background", currentCategory.getBackground());
+                intent.putParcelableArrayListExtra("wordList", currentCategory.getWordList());
                 startActivity(intent);
             }
         });
