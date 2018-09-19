@@ -15,9 +15,12 @@
  */
 package com.example.android.miwok;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.android.volley.Cache;
@@ -56,6 +59,16 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new MainAdapter(this, mCategories);
         ListView myList = findViewById(R.id.category_list_view);
         myList.setAdapter(mAdapter);
+        myList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, NumbersActivity.class);
+                Main currentCategory = mCategories.get(position);
+                intent.putExtra("category", currentCategory.getCategory());
+                intent.putExtra("background", currentCategory.getBackground());
+                startActivity(intent);
+            }
+        });
 
         Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024);
         Network network = new BasicNetwork(new HurlStack());
