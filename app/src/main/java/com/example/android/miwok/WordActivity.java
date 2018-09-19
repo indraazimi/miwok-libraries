@@ -21,7 +21,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-public class NumbersActivity extends AppCompatActivity {
+public class WordActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +30,7 @@ public class NumbersActivity extends AppCompatActivity {
 
         // Set the title of action bar
         getSupportActionBar().setTitle(getIntent().getStringExtra("category"));
-        
+
         // Create a list of words
         ArrayList<Word> words = getIntent().getParcelableArrayListExtra("wordList");
 

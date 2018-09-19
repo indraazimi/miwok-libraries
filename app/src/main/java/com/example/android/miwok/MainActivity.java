@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         myList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(MainActivity.this, NumbersActivity.class);
+                Intent intent = new Intent(MainActivity.this, WordActivity.class);
                 Main currentCategory = mCategories.get(position);
                 intent.putExtra("category", currentCategory.getCategory());
                 intent.putExtra("background", currentCategory.getBackground());
