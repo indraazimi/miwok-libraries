@@ -1,30 +1,12 @@
 Miwok App
 ===================================
 
-This app displays lists of vocabulary words for the user to learn the Miwok language.
-Used in a Udacity course in the Beginning Android Nanodegree.
+This app displays lists of vocabulary words for the user to learn the Miwok language. Unlike the original version used in a Udacity course in the Beginning Android Nanodegree, this app has dynamic vocabulary words, loaded from server in JSON format.
 
-Pre-requisites
---------------
-
-- Android SDK v23
-- Android Build Tools v23.0.2
-- Android Support Repository v23.3.0
-
-Getting Started
----------------
-
-This sample uses the Gradle build system. To build this project, use the
-"gradlew build" command or use "Import Project" in Android Studio.
-
-Support
--------
-
-- Google+ Community: https://plus.google.com/communities/105153134372062985968
-- Stack Overflow: http://stackoverflow.com/questions/tagged/android
-
-Patches are encouraged, and may be submitted by forking this project and
-submitting a pull request through GitHub. Please see CONTRIBUTING.md for more details.
+This app is developed to demonstrate how to use libraries in Android. To achieve its goal, this app using 3 libraries:
+* Volley, to get the JSON data from server
+* Gson, to parse JSON string to Java Object
+* Picasso, to load word images from server
 
 License
 -------
